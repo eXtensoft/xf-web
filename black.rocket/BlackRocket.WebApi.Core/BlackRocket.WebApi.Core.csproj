@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{FF9328C9-3682-40BC-8564-94CF0AFB071D}</ProjectGuid>
+    <ProjectGuid>{62418EB5-C7F3-4CE7-A4BF-063E64536B3C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>XF.WebApi.Model</RootNamespace>
-    <AssemblyName>XF.WebApi.Model</AssemblyName>
+    <RootNamespace>BlackRocket.WebApi</RootNamespace>
+    <AssemblyName>BlackRocket.WebApi.Core</AssemblyName>
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -32,26 +32,15 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\common\assemblyinfo\AssemblyInfo.cs" />
-    <Compile Include="ApiRequest.cs" />
-    <Compile Include="ApiRequestProfile.cs" />
-    <Compile Include="eXtensibleApiRequest.cs" />
-    <Compile Include="ExtensionMethods.cs" />
-    <Compile Include="Note.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\XF.Common.Contracts\XF.Common.Contracts.csproj">
-      <Project>{d2c8a797-5ad1-4ba0-a50d-9cf5786d4ca6}</Project>
-      <Name>XF.Common.Contracts</Name>
-    </ProjectReference>
+    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
