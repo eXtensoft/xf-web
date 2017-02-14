@@ -1,4 +1,5 @@
-﻿// <copyright company="eXtensoft, LLC" file="PublicAccessAuthorizationFilter.cs">
+﻿
+// <copyright company="eXtensoft, LLC" file="PublicAccessAuthorizationFilter.cs">
 // Copyright © 2016 All Right Reserved
 // </copyright>
 

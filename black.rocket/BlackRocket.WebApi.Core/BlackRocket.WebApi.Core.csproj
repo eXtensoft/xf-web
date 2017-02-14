@@ -40,7 +40,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BlackRocketMessageHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\eXtensibleFramework\XF.WebApi.Contracts\XF.WebApi.Contracts.csproj">
+      <Project>{8453a595-3624-4b78-9216-1a21dc1e55ec}</Project>
+      <Name>XF.WebApi.Contracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\eXtensibleFramework\XF.WebApi.Core\XF.WebApi.Core.csproj">
+      <Project>{18024bb0-546f-4f40-b913-5f08c43d786e}</Project>
+      <Name>XF.WebApi.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\eXtensibleFramework\XF.WebApi.Model\XF.WebApi.Model.csproj">
+      <Project>{ff9328c9-3682-40bc-8564-94cf0afb071d}</Project>
+      <Name>XF.WebApi.Model</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -65,10 +65,10 @@ namespace XF.WebApi.Config
             set { this[ConfigConstants.ServiceTokenAttributeName] = value; }
         }
 
-        [ConfigurationProperty(ConfigConstants.MessageProviderFolder, IsRequired= false)]
+        [ConfigurationProperty(ConfigConstants.MessageProviderFolder, IsRequired = false)]
         public string MessageProviderFolder
         {
-            get 
+            get
             {
                 object o = this[ConfigConstants.MessageProviderFolder];
                 return (o != null && !String.IsNullOrWhiteSpace(o.ToString())) ? (string)o : XFAPIConstants.Default.MessageProviderFolder;

@@ -1,37 +1,41 @@
-﻿// <copyright company="eXtensible Solutions, LLC" file="DataMap.cs">
-// Copyright © 2015 All Right Reserved
-// </copyright>
+﻿
 
-namespace XF.Common
+namespace XF.Common.Discovery
 {
     using System;
-    using System.Data;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Xml;
     using System.Xml.Serialization;
 
     [Serializable]
     public class DataMap
     {
-        [XmlAttribute("columnName")]
-        public string ColumnName { get; set; }
+        [XmlAttribute("databaseType")]
+        public string DatabaseType { get; set; }
 
-        [XmlAttribute("dataType")]
-        public DbType DataType { get; set; }
+        [XmlAttribute("dbType")]
+        public System.Data.DbType DataAccessType { get; set; }
 
-        [XmlAttribute("propertyName")]
-        public string PropertyName { get; set; }
+        [XmlAttribute("readerAccessor")]
+        public string DataReaderAccessor { get; set; }
 
-        [XmlAttribute("isNullable")]
-        public bool IsNullable { get; set; }
-
-        [XmlAttribute("isReadOnly")]
-        public bool IsReadOnly { get; set; }
-
-        public override string ToString()
+        [XmlAttribute("clrType")]
+        public string ClrType
         {
-            string column = String.Format("ColumnName = {0}", ColumnName);
-            string datatype = String.Format("DataType = {0}", DataType.ToString());
-            string property = String.Format("PropertyName = {0}", PropertyName);
-            return String.Format("{0}{1}{2}", column.PadRight(30), datatype.PadRight(30), property.PadRight(30));
+            get
+            {
+                return SystemType.FullName;
+            }
+            set
+            {
+                SystemType = Type.GetType(value);
+            }
+
         }
+        [XmlIgnore]
+        public Type SystemType { get; set; }
+
     }
 }

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace XF.WebApi {
+namespace XF.WebApi.Contracts {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace XF.WebApi {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("XF.WebApi.HttpResources", typeof(HttpResources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("XF.WebApi.Contracts.HttpResources", typeof(HttpResources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

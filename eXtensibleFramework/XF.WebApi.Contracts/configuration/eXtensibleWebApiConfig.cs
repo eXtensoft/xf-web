@@ -55,7 +55,7 @@ namespace XF.WebApi
                 Configuration config = ConfigurationManager.OpenMappedExeConfiguration(configfilemap, ConfigurationUserLevel.None);
                 eXtensibleWebApiSection section = config.Sections[XFWebApiConstants.Config.SectionName] as eXtensibleWebApiSection;
 
-                
+
                 if (section != null)
                 {
                     MessageProviderFolder = section.MessageProviderFolder;

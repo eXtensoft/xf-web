@@ -39,7 +39,7 @@ namespace XF.WebApi
 
         public List<ApiHttpStatusCode> ErrorCodeWhitelist
         {
-            get 
+            get
             {
                 return _ErrorCodeWhitelist;
             }
@@ -50,30 +50,33 @@ namespace XF.WebApi
 
         static HttpMessageProvider()
         {
-            InitializeCodes();           
+            InitializeCodes();
         }
 
         private static void InitializeCodes()
         {
-            
+
             try
             {
-                XDocument xdoc = XDocument.Parse(HttpResources.httpstatuscodes);
+                var xml = Contracts.HttpResources.httpstatuscodes;
+                XDocument xdoc = XDocument.Parse(xml);
                 statusCodes = (from x in xdoc.Descendants("HttpCode")
-                                                let y = x
-                                                select new ApiHttpStatusCode()
-                                                {
-                                                
-                                                    Code = Int32.Parse(x.Attribute("code").Value),
-                                                    Name = x.Attribute("name").Value,
-                                                    Summary = (x.Attribute("sys.net").Value).Trim(),
-                                                    IsSuccess = Boolean.Parse(x.Attribute("success").Value)
-                                                   
-                                                }).ToList();
-            }
-            catch
-            {
+                               let y = x
+                               select new ApiHttpStatusCode()
+                               {
 
+                                   Code = Int32.Parse(x.Attribute("code").Value),
+                                   Name = x.Attribute("name").Value,
+                                   Summary = (x.Attribute("sys.net").Value).Trim(),
+                                   IsSuccess = Boolean.Parse(x.Attribute("success").Value)
+
+                               }).ToList();
+            }
+            catch (Exception ex)
+            {
+                string message = ex.InnerException != null ? ex.InnerException.Message : ex.Message;
+                var props = eXtensibleConfig.GetProperties();
+                EventWriter.WriteError(message, SeverityType.Critical, "Initialization", props);
             }
 
             string candidates = ConfigurationManager.AppSettings["api.httpcodes.whitelist"];
@@ -84,7 +87,7 @@ namespace XF.WebApi
                 foreach (var item in t)
                 {
                     int j;
-                    if (Int32.TryParse(item,out j))
+                    if (Int32.TryParse(item, out j))
                     {
                         codes.Add(j);
                     }
@@ -92,7 +95,15 @@ namespace XF.WebApi
             }
             else
             {
-                // do defaults
+                codes.Add(200);
+                codes.Add(201);
+                codes.Add(202);
+                codes.Add(400);
+                codes.Add(401);
+                codes.Add(403);
+                codes.Add(404);
+                codes.Add(409);
+                codes.Add(500);
             }
             _ErrorCodeWhitelist = new List<ApiHttpStatusCode>();
             foreach (var code in statusCodes)
@@ -179,7 +190,7 @@ namespace XF.WebApi
 
         #endregion
 
- 
+
 
 
         public virtual bool VetStatusCode(HttpStatusCode candidateStatusCode)
@@ -190,12 +201,12 @@ namespace XF.WebApi
             {
                 b = maps[j].IsAvailable;
             }
-            if(!b)
+            if (!b)
             {
                 var principal = Thread.CurrentPrincipal as eXtensibleClaimsPrincipal;
                 if (principal != null)
                 {
-                   
+
                     principal.Items.Add(new TypedItem("xf-request.response.status-code-invalid", candidateStatusCode.ToString()));
                 }
             }
@@ -203,7 +214,7 @@ namespace XF.WebApi
             return b;
         }
 
-        
+
 
         public string ResolvePattern(string key)
         {
@@ -219,7 +230,7 @@ namespace XF.WebApi
             }
             catch
             {
-                s = ComposeMessage(formatPattern,messageParameters);
+                s = ComposeMessage(formatPattern, messageParameters);
             }
             return s;
         }
@@ -232,7 +243,7 @@ namespace XF.WebApi
                 for (int i = 0; i < messageParameters.Length; i++)
                 {
                     string s = messageParameters[i].ToString();
-                    if (i==0)
+                    if (i == 0)
                     {
                         sb.AppendFormat("pattern:{0}", s);
                     }
@@ -255,7 +266,8 @@ namespace XF.WebApi
 
         public bool VetStatusCode(HttpStatusCode statusCode, object model)
         {
-            return VetStatusCode(statusCode);
+            //return VetStatusCode(statusCode);
+            return false;
         }
 
     }

@@ -14,35 +14,66 @@ namespace BlackRocket.WebApi
     public class ToDoController : EndpointServiceController
     {
 
+       
+
+        private const string description =  "This controller provides actions to create, get, remove, and update 'ToDo' items";
+
+
+        private const string id = "00F1224A-24AD-43B5-9A8C-6439A506EE76";
+
+
+        private const string name = "ToDo Controller";
+
+
+        private const string routetablepattern =  "v{version}/todos/{id}";
+
+
+        private const string whitelistpattern =  "v{version}/todos/{id}";
+
         #region abstract class implementations
-
-        public override string GetDescription()
-        {
-            return "This controller provides actions to create, get, remove, and update 'ToDo' items";
-        }
-
-        public override Guid GetId()
-        {
-            return new Guid("00F1224A-24AD-43B5-9A8C-6439A506EE76");
-        }
-
-        public override string GetName()
-        {
-            return "ToDo Controller";
-        }
-
-        public override string GetRouteTablePattern()
-        {
-            return "v{version}/todos/{id}";
-        }
-
-        public override string GetWhitelistPattern()
-        {
-            return "v{version}/todos/{id}";
-        }
-        #endregion
+       
 
         private static string todoRoute = "v{version}/todos/{id}";
+
+        public override string Description
+        {
+            get
+            {
+                return description;
+            }
+        }
+
+        public override Guid Id
+        {
+            get
+            {
+                return new Guid(id);
+            }
+        }
+
+        public override string Name
+        {
+            get
+            {
+                return name;
+            }
+        }
+
+        public override string WhitelistPattern
+        {
+            get
+            {
+                return whitelistpattern;
+            }
+        }
+
+        public override string RouteTablePattern
+        {
+            get
+            {
+                return routetablepattern;
+            }
+        }
 
         public override void Register(HttpConfiguration config)
         {
@@ -52,7 +83,7 @@ namespace BlackRocket.WebApi
                 defaults: new { controller = "ToDo",  id = RouteParameter.Optional  }
                 );
         }
-
+        #endregion
 
         #region http endpoints
 

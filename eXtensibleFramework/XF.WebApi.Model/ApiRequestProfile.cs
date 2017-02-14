@@ -10,7 +10,7 @@ namespace XF.WebApi.Core
     using System.Runtime.Serialization;
     using System.Text;
 
-    [DataContract(Namespace ="")]
+    [DataContract(Namespace = "")]
     [Serializable]
     public sealed class ApiRequestProfile
     {

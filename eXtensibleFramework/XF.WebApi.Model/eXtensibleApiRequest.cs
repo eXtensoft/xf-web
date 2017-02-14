@@ -49,7 +49,7 @@ namespace XF.WebApi.Core
 
         }
 
-        public eXtensibleApiRequest(Dictionary<string,object> items, Func<Dictionary<string,object>,string> serializer)
+        public eXtensibleApiRequest(Dictionary<string, object> items, Func<Dictionary<string, object>, string> serializer)
         {
             bool b = false;
             if (serializer != null)
@@ -63,7 +63,7 @@ namespace XF.WebApi.Core
                 {
 
                 }
-                
+
             }
             if (!b)
             {
@@ -79,7 +79,7 @@ namespace XF.WebApi.Core
             if (items.ContainsKey("api.extensible.list"))
             {
                 HandlerKey = items.Get<string>("api.extensible.list");
-               
+
             }
             if (items.ContainsKey("xf-request.start"))
             {
@@ -202,7 +202,7 @@ namespace XF.WebApi.Core
 
         private static string format = "\"{0}\":\"{1}\"";
 
-        private static string SerializeData(Dictionary<string,object> items)
+        private static string SerializeData(Dictionary<string, object> items)
         {
             StringBuilder sb = new StringBuilder();
             sb.Append("{");
@@ -215,7 +215,7 @@ namespace XF.WebApi.Core
                 }
                 if (item.Value != null)
                 {
-                    sb.Append(String.Format(format,item.Key,item.Value.ToString()));
+                    sb.Append(String.Format(format, item.Key, item.Value.ToString()));
                     i++;
                 }
             }

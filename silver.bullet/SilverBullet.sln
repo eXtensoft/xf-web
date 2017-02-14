@@ -1,0 +1,51 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SilverBullet.Model", "SilverBullet.Model\SilverBullet.Model.csproj", "{13C49D6A-1DF1-4667-B0C3-8ABE18AB0BD5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SilverBullet.Core", "SilverBullet.Core\SilverBullet.Core.csproj", "{731A3DC4-27F0-4F13-9EF7-D21C714C0819}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SilverBullet.Console", "SilverBullet.Console\SilverBullet.Console.csproj", "{F6470ED5-883F-409A-92CA-FE6B6FBF8F38}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SilverBullet", "SilverBullet\SilverBullet.csproj", "{5F8F23D0-2B53-4565-B45C-5B2055E4D4DE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "xf", "xf", "{0DAD52B5-629E-4562-8CC8-7403C44640C4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XF.Common.Contracts", "..\eXtensibleFramework\XF.Common.Contracts\XF.Common.Contracts.csproj", "{D2C8A797-5AD1-4BA0-A50D-9CF5786D4CA6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{13C49D6A-1DF1-4667-B0C3-8ABE18AB0BD5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{13C49D6A-1DF1-4667-B0C3-8ABE18AB0BD5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{13C49D6A-1DF1-4667-B0C3-8ABE18AB0BD5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{13C49D6A-1DF1-4667-B0C3-8ABE18AB0BD5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{731A3DC4-27F0-4F13-9EF7-D21C714C0819}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{731A3DC4-27F0-4F13-9EF7-D21C714C0819}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{731A3DC4-27F0-4F13-9EF7-D21C714C0819}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{731A3DC4-27F0-4F13-9EF7-D21C714C0819}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F6470ED5-883F-409A-92CA-FE6B6FBF8F38}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F6470ED5-883F-409A-92CA-FE6B6FBF8F38}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F6470ED5-883F-409A-92CA-FE6B6FBF8F38}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F6470ED5-883F-409A-92CA-FE6B6FBF8F38}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5F8F23D0-2B53-4565-B45C-5B2055E4D4DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F8F23D0-2B53-4565-B45C-5B2055E4D4DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F8F23D0-2B53-4565-B45C-5B2055E4D4DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F8F23D0-2B53-4565-B45C-5B2055E4D4DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D2C8A797-5AD1-4BA0-A50D-9CF5786D4CA6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D2C8A797-5AD1-4BA0-A50D-9CF5786D4CA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D2C8A797-5AD1-4BA0-A50D-9CF5786D4CA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D2C8A797-5AD1-4BA0-A50D-9CF5786D4CA6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D2C8A797-5AD1-4BA0-A50D-9CF5786D4CA6} = {0DAD52B5-629E-4562-8CC8-7403C44640C4}
+	EndGlobalSection
+EndGlobal

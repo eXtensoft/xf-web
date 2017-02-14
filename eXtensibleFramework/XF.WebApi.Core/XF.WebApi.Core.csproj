@@ -80,6 +80,10 @@
       <Project>{d2c8a797-5ad1-4ba0-a50d-9cf5786d4ca6}</Project>
       <Name>XF.Common.Contracts</Name>
     </ProjectReference>
+    <ProjectReference Include="..\XF.Common\XF.Common.csproj">
+      <Project>{2e3bb613-4780-4383-873e-0255df41f5dd}</Project>
+      <Name>XF.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\XF.WebApi.Common.Contracts\XF.WebApi.Common.Contracts.csproj">
       <Project>{8c4f0c29-fa37-4426-9798-4d4980cecc7f}</Project>
       <Name>XF.WebApi.Common.Contracts</Name>

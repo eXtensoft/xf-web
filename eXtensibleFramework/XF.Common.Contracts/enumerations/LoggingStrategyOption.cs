@@ -9,8 +9,12 @@ namespace XF.Common
     public enum LoggingStrategyOption
     {
         None,
+        Output,
         Silent,
+        XFTool,
+        CommonServices,
         WindowsEventLog,
         Datastore,
+        Plugin,
     }
 }

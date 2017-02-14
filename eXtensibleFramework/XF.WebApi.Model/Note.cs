@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace XF.WebApi.Core
 {
-    [DataContract(Namespace="")]
+    [DataContract(Namespace = "")]
     [Serializable]
     public class Note
     {
-        [DataMember]       
+        [DataMember]
         public Guid NoteId { get; set; }
         [DataMember]
         public DateTime CreatedAt { get; set; }

@@ -13,7 +13,7 @@ namespace XF.WebApi
     using System.Threading;
     using XF.Common;
 
-    public  class eXtensibleClaimsPrincipal<T>  : eXtensibleClaimsPrincipal where T : class, new()
+    public class eXtensibleClaimsPrincipal<T> : eXtensibleClaimsPrincipal where T : class, new()
     {
 
 
@@ -26,14 +26,14 @@ namespace XF.WebApi
         }
 
 
-        //public static void Accept(IeXtensibleVisitor<T> visitor)
-        //{
-        //    var cp = Thread.CurrentPrincipal as eXtensibleClaimsPrincipal<T>;
-        //    if (cp != null)
-        //    {
-        //        cp.Items.Accept(cp.Model, visitor);
-        //    }
-        //}
+        public static void Accept(IeXtensibleVisitor<T> visitor)
+        {
+            var cp = Thread.CurrentPrincipal as eXtensibleClaimsPrincipal<T>;
+            if (cp != null)
+            {
+                cp.Items.Accept(cp.Model, visitor);
+            }
+        }
 
 
     }

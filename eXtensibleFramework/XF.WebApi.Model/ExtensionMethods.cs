@@ -12,7 +12,7 @@ namespace XF.WebApi
     public static class ExtensionMethods
     {
 
-        public static T Get<T>(this Dictionary<string,object> items, string key)
+        public static T Get<T>(this Dictionary<string, object> items, string key)
         {
             T t = default(T);
 
@@ -25,12 +25,12 @@ namespace XF.WebApi
                     t = (T)o;
 
                 }
-                catch {}
+                catch { }
             }
 
             return t;
         }
-        public static string GetAsString(this Dictionary<string,object> items, string key)
+        public static string GetAsString(this Dictionary<string, object> items, string key)
         {
             string s = String.Empty;
             if (items.ContainsKey(key))

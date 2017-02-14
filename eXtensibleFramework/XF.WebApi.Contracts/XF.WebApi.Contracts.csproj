@@ -73,7 +73,11 @@
     <Compile Include="eXtensibleApiConfig.cs" />
     <Compile Include="http.response.message\ResponseConfiguration.cs" />
     <Compile Include="HttpExtensionMethods.cs" />
-    <Compile Include="HttpResources.Designer.cs" />
+    <Compile Include="HttpResources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>HttpResources.resx</DependentUpon>
+    </Compile>
     <Compile Include="message.providers\HttpMessageProvider.cs" />
     <Compile Include="message.providers\MessageProvider.cs" />
     <Compile Include="message.providers\SqlServerHttpMessageProvider.cs" />
@@ -92,9 +96,11 @@
       <Name>XF.WebApi.Model</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
-    <EmbeddedResource Include="HttpResources.resx" />
+    <EmbeddedResource Include="HttpResources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>HttpResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Content Include="data\httpstatuscodes.xml" />

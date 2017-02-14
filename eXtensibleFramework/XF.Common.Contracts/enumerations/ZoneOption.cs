@@ -13,6 +13,8 @@ namespace XF.Common
         QA,
         UAT,
         Staging,
-        Production
+        Integration,
+        Services,
+        Production,
     }
 }

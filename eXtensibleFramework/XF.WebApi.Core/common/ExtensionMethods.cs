@@ -30,13 +30,13 @@ namespace XF.WebApi.Core
 
         };
 
-        private static IDictionary<string,object> ToDictionaryOut(this System.Net.Http.HttpRequestMessage message)
+        private static IDictionary<string, object> ToDictionaryOut(this System.Net.Http.HttpRequestMessage message)
         {
             Dictionary<string, object> d = new Dictionary<string, object>();
 
             foreach (var item in message.Properties)
             {
-                if(routeData.Contains(item.Key.ToLower()))
+                if (routeData.Contains(item.Key.ToLower()))
                 {
                     RouteDataValueProvider provider = item.Value as RouteDataValueProvider;
                     if (provider != null)
@@ -48,7 +48,7 @@ namespace XF.WebApi.Core
                             object o = vpr.RawValue;
                             if (key.Equals("controller", StringComparison.OrdinalIgnoreCase))
                             {
-                                d.Add("xf-request.route-data.controller", String.Format("{0}.Controller",o.ToString()));
+                                d.Add("xf-request.route-data.controller", String.Format("{0}.Controller", o.ToString()));
                             }
                             else
                             {
@@ -98,21 +98,21 @@ namespace XF.WebApi.Core
         }
 
 
-        private static IList<string> actions = new List<string>(){"post","put","delete"};
+        private static IList<string> actions = new List<string>() { "post", "put", "delete" };
 
-        public  static IDictionary<string,object> ToDictionary(this System.Net.Http.HttpRequestMessage message, bool isBegin)
+        public static IDictionary<string, object> ToDictionary(this System.Net.Http.HttpRequestMessage message, bool isBegin)
         {
-                if(isBegin)
-                {
-                    return ToDictionaryIn(message);
-                }
-                else
-                {
-                    return ToDictionaryOut(message);
-                }
+            if (isBegin)
+            {
+                return ToDictionaryIn(message);
+            }
+            else
+            {
+                return ToDictionaryOut(message);
+            }
         }
 
-        public static IDictionary<string,object> ToDictionaryIn(this System.Net.Http.HttpRequestMessage message)
+        public static IDictionary<string, object> ToDictionaryIn(this System.Net.Http.HttpRequestMessage message)
         {
 
             Dictionary<string, object> d = new Dictionary<string, object>();
@@ -129,7 +129,7 @@ namespace XF.WebApi.Core
                 {
                     d.Add("xf-request.message.basic-token", message.Headers.Authorization.Parameter);
                 }
-                if (message.Headers.Authorization.Scheme.Equals("bearer",StringComparison.OrdinalIgnoreCase))
+                if (message.Headers.Authorization.Scheme.Equals("bearer", StringComparison.OrdinalIgnoreCase))
                 {
                     d.Add("xf-request.message.bearer-token", message.Headers.Authorization.Parameter);
                 }
@@ -140,7 +140,7 @@ namespace XF.WebApi.Core
                 d.Add("xf-request.message.auth-value", "none");
             }
             d.Add("xf-request.message.protocol", message.RequestUri.Scheme.ToLower());
-            
+
             string host = message.RequestUri.Host.ToLower();
             d.Add("xf-request.message.host", host.ToLower());
             var parts = host.Split(new char[] { '.' });
@@ -159,7 +159,7 @@ namespace XF.WebApi.Core
                 {
                     d.Add("xf-request.message.user-agent", context.Request.UserAgent);
                 }
-                
+
             }
 
             foreach (var item in message.Headers)
@@ -185,7 +185,7 @@ namespace XF.WebApi.Core
                 }
             }
 
-            foreach (KeyValuePair<string,string> kvp in message.GetQueryNameValuePairs())
+            foreach (KeyValuePair<string, string> kvp in message.GetQueryNameValuePairs())
             {
                 string key = String.Format("xf-request.query-string.{0}", kvp.Key);
                 d.Add(key, kvp.Value);
@@ -194,7 +194,7 @@ namespace XF.WebApi.Core
 
             return d;
         }
-    
+
         public static void Start(this eXtensibleClaimsPrincipal principal, HttpRequestMessage request)
         {
             principal.Initialize(request, true);
@@ -233,7 +233,7 @@ namespace XF.WebApi.Core
                 {
                     principal.AddItem(item.Key, item.Value);
 
-                }                
+                }
             }
         }
 

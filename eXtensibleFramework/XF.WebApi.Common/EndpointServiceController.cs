@@ -32,76 +32,78 @@ namespace XF.WebApi
             }
         }
 
-        public abstract string GetDescription();
-        public abstract Guid GetId();
-        public abstract string GetName();
+        public abstract string Description { get; }
 
-        public virtual int GetVersion() { return 1; }
+        public abstract Guid Id { get; }
 
-        public abstract string GetWhitelistPattern();
+        public abstract string Name { get; }
 
-        public abstract string GetRouteTablePattern();
+        public virtual int Version { get; }
+
+        public abstract string WhitelistPattern { get; }
+
+        public abstract string RouteTablePattern { get; }
 
         public virtual void Register(HttpConfiguration config)
         {
-            string assemblyName = this.GetType().AssemblyQualifiedName.Split(new char[]{','})[0];
-            
-            string endpointName = ((IEndpointController)this).Name;
-            string versionName = ((IEndpointController)this).Version.ToString();
-            string registerName = String.Format("{0}-{1}-v{2}",assemblyName , endpointName,versionName);
+            string assemblyName = this.GetType().AssemblyQualifiedName.Split(new char[] { ',' })[0];
+
+            string endpointName = ((IEndpointController)this).EndpointName;
+            string versionName = ((IEndpointController)this).EndpointVersion.ToString();
+            string registerName = String.Format("{0}-{1}-v{2}", assemblyName, endpointName, versionName);
 
             config.Routes.MapHttpRoute(
                     name: registerName,
-                    routeTemplate: ((IEndpointController)this).RouteTablePattern,
+                    routeTemplate: ((IEndpointController)this).EndpointRouteTablePattern,
                     defaults: new { controller = ControllerName }
                 );
         }
 
-        string IEndpointController.Description
+        string IEndpointController.EndpointDescription
         {
             get
             {
-                return GetDescription();
+                return Description;
             }
         }
 
-        Guid IEndpointController.Id
+        Guid IEndpointController.EndpointId
         {
             get
             {
-                return GetId();
+                return Id;
             }
         }
 
-        string IEndpointController.Name
+        string IEndpointController.EndpointName
         {
             get
             {
-                return GetName();
+                return Name;
             }
         }
 
-        int IEndpointController.Version
+        int IEndpointController.EndpointVersion
         {
             get
             {
-                return GetVersion();
+                return Version;
             }
         }
 
-        string IEndpointController.WhitelistPattern
+        string IEndpointController.EndpointWhitelistPattern
         {
             get
             {
-                return GetWhitelistPattern();
+                return WhitelistPattern;
             }
         }
 
-        string IEndpointController.RouteTablePattern
+        string IEndpointController.EndpointRouteTablePattern
         {
             get
             {
-                return GetRouteTablePattern();
+                return RouteTablePattern;
             }
         }
 

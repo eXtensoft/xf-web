@@ -10,6 +10,7 @@ namespace XF.Common
     using System.IO;
     using System.Linq;
     using System.Reflection;
+    using System.Runtime.Serialization.Formatters.Binary;
     using System.Text;
 
 
@@ -30,7 +31,22 @@ namespace XF.Common
             typeof(Guid),
         };
 
+        public static T Clone<T>(this T item) where T : class, new()
+        {
+            T t = default(T);
+            if (item != null)
+            {
+                using (MemoryStream stream = new MemoryStream())
+                {
+                    BinaryFormatter formatter = new BinaryFormatter();
+                    formatter.Serialize(stream, item);
+                    stream.Position = 0;
+                    t = (T)formatter.Deserialize(stream);
+                }
+            }
 
+            return t;
+        }
 
         public static List<TypedItem> ToTypeItems(this IDictionary<string, object> properties)
         {
@@ -89,11 +105,11 @@ namespace XF.Common
             }
             return s;
         }
-        public static List<TypedItem> ToTypedItems(this Dictionary<string,object> dictionary)
+        public static List<TypedItem> ToTypedItems(this Dictionary<string, object> dictionary)
         {
             HashSet<string> hs = new HashSet<string>();
             List<TypedItem> list = new List<TypedItem>();
-            foreach(var key in dictionary.Keys)
+            foreach (var key in dictionary.Keys)
             {
                 if (hs.Add(key))
                 {
@@ -102,9 +118,9 @@ namespace XF.Common
             }
             return list;
         }
-        public static IDictionary<string,object> ToIDictionary(this ICriterion criterion)
+        public static IDictionary<string, object> ToIDictionary(this ICriterion criterion)
         {
-            Dictionary<string,object> d = new Dictionary<string,object>();
+            Dictionary<string, object> d = new Dictionary<string, object>();
             HashSet<string> hs = new HashSet<string>();
             foreach (var item in criterion.Items)
             {
@@ -130,7 +146,7 @@ namespace XF.Common
             return d;
         }
 
-        public static Dictionary<string,object> ToDictionary(this IContext context)
+        public static Dictionary<string, object> ToDictionary(this IContext context)
         {
             Dictionary<string, object> d = new Dictionary<string, object>();
             HashSet<string> hs = new HashSet<string>();
@@ -207,7 +223,7 @@ namespace XF.Common
             t = default(T);
             if (list != null && list.Count > 0)
             {
-                foreach (var item in list.Where(x=> x.Value != null))
+                foreach (var item in list.Where(x => x.Value != null))
                 {
                     if (item.Key.Equals(key, StringComparison.OrdinalIgnoreCase) && item.Value is T)
                     {
@@ -310,7 +326,7 @@ namespace XF.Common
             return b;
         }
 
-        public static Dictionary<string,object> Merge(this Dictionary<string,object> d, Dictionary<string,object> from)
+        public static Dictionary<string, object> Merge(this Dictionary<string, object> d, Dictionary<string, object> from)
         {
             foreach (var item in d)
             {
@@ -329,7 +345,7 @@ namespace XF.Common
             foreach (var item in list)
             {
 
-                if (item.Key.Equals(key,StringComparison.OrdinalIgnoreCase))
+                if (item.Key.Equals(key, StringComparison.OrdinalIgnoreCase))
                 {
                     swap.Add(new TypedItem(key, value));
                 }
@@ -342,15 +358,15 @@ namespace XF.Common
         }
 
 
-        //public static void Accept(this IEnumerable<TypedItem> items, IeXtensibleVisitor visitor)
-        //{
-        //    visitor.Visit(items);
-        //}
-        //public static void Accept<T>(this IEnumerable<TypedItem> items, T t, IeXtensibleVisitor<T> visitor) where T : class, new()
-        //{
-        //    visitor.Visit(items);
-        //    visitor.Visit(t);
-        //}
+        public static void Accept(this IEnumerable<TypedItem> items, IeXtensibleVisitor visitor)
+        {
+            visitor.Visit(items);
+        }
+        public static void Accept<T>(this IEnumerable<TypedItem> items, T t, IeXtensibleVisitor<T> visitor) where T : class, new()
+        {
+            visitor.Visit(items);
+            visitor.Visit(t);
+        }
 
 
         public static Type GetItemType(this ICriterion criteria, string key)
@@ -454,7 +470,7 @@ namespace XF.Common
             return s;
         }
 
-        public static T GetValueAs<T>(this IEnumerable<TypedItem> items,string key)
+        public static T GetValueAs<T>(this IEnumerable<TypedItem> items, string key)
         {
             T t = default(T);
             bool b = false;
@@ -585,14 +601,7 @@ namespace XF.Common
         //    }
         //    list.Add(new TypedItem(key, value));
         //}
-        public static eXMetric ToMetric<T>(this IResponse<T> response) where T : class, new()
-        {
-            Message<T> message = (Message<T>)response;
 
-            eXMetric item = new eXMetric(message.Items);
-
-            return item;
-        }
 
         #region helper classes
 

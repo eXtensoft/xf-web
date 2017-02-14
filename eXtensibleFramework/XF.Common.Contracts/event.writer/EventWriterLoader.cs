@@ -15,11 +15,24 @@ namespace XF.Common
             {
                 case LoggingStrategyOption.None:
                     break;
+                case LoggingStrategyOption.Output:
+                    writer = new DebugEventWriter();
+                    break;
+
+                case LoggingStrategyOption.CommonServices:
+                    writer = new CommonServicesWriter();
+                    break;
                 case LoggingStrategyOption.WindowsEventLog:
                     writer = new EventLogWriter();
                     break;
                 case LoggingStrategyOption.Silent:
                     writer = new EventLogWriter();
+                    break;
+                case LoggingStrategyOption.XFTool:
+                    writer = new XFToolWriter();
+                    break;
+                case LoggingStrategyOption.Plugin:
+                    writer = PluginLoader.LoadReferencedAssembly<IEventWriter>().FirstOrDefault() as IEventWriter;
                     break;
                 case LoggingStrategyOption.Datastore:
                     writer = new DatastoreEventWriter();

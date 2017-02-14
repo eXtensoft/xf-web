@@ -14,7 +14,7 @@ namespace XF.WebApi
     using System.Xml.Serialization;
     using System.IO;
 
-   // [InheritedExport(typeof(ITypeMap))]
+    // [InheritedExport(typeof(ITypeMap))]
     public abstract class ApiRequestProvider : IApiRequestProvider //, ITypeMap
     {
 
@@ -79,7 +79,7 @@ namespace XF.WebApi
 
         void IApiRequestProvider.Post(IEnumerable<ApiRequest> models)
         {
-             Post(models);
+            Post(models);
         }
 
         void IApiRequestProvider.Post(ApiRequest model)

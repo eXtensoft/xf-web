@@ -42,6 +42,7 @@ namespace XF.WebApi
         private const string AuthSchemaParamName = "@authschema";
         private const string AuthValueParamName = "@authvalue";
         private const string MessageBodyParamName = "@messagebody";
+        private const string ErrorLogParamName = "@errolog";
         private const string DbSchema = "log";
         #endregion local fields
 
@@ -67,7 +68,7 @@ namespace XF.WebApi
                 return LocalGetOne(j);
 
             }
-            else if(Guid.TryParse(id, out g))
+            else if (Guid.TryParse(id, out g))
             {
                 return LocalGet(g);
             }
@@ -209,11 +210,12 @@ namespace XF.WebApi
             string schema = eXtensibleConfig.Zone.Equals("production", StringComparison.OrdinalIgnoreCase) ? DateTime.Today.ToString("MMM").ToLower() : "log";
             string sql = "insert into [" + schema + "].[ApiRequest] ( [AppKey],[AppZone],[AppInstance],[Elapsed],[Start],[Protocol],[Host],[Path]" +
                 ",[ClientIP],[UserAgent],[HttpMethod],[ControllerName],[ControllerMethod],[MethodReturnType],[ResponseCode],[ResponseText]" +
-                ",[XmlData],[MessageId],[BasicToken],[BearerToken],[AuthSchema],[AuthValue],[MessageBody] ) values (" + AppKeyParamName + "," + AppZoneParamName + "," +
+                ",[XmlData],[MessageId],[BasicToken],[BearerToken],[AuthSchema],[AuthValue],[MessageBody],[HasLog] ) values (" + AppKeyParamName + "," + AppZoneParamName + "," +
                 AppInstanceParamName + "," + ElapsedParamName + "," + StartParamName + "," + ProtocolParamName + "," + HostParamName + "," +
                 PathParamName + "," + ClientIPParamName + "," + UserAgentParamName + "," + HttpMethodParamName + "," + ControllerNameParamName + "," +
                 ControllerMethodParamName + "," + MethodReturnTypeParamName + "," + ResponseCodeParamName + "," + ResponseTextParamName + "," +
-                XmlDataParamName + "," + MessageIdParamName + "," + BasicTokenParamName + "," + BearerTokenParamName + "," + AuthSchemaParamName + "," + AuthValueParamName + "," + MessageBodyParamName + ")";
+                XmlDataParamName + "," + MessageIdParamName + "," + BasicTokenParamName + "," + BearerTokenParamName + "," + AuthSchemaParamName +
+                "," + AuthValueParamName + "," + MessageBodyParamName + "," + ErrorLogParamName + ")";
 
 
             var settings = ConfigurationManager.ConnectionStrings[eXtensibleWebApiConfig.SqlConnectionKey];
@@ -253,6 +255,7 @@ namespace XF.WebApi
                             cmd.Parameters.AddWithValue(AuthSchemaParamName, model.AuthSchema.Truncate(10));
                             cmd.Parameters.AddWithValue(AuthValueParamName, model.AuthValue.Truncate(50));
                             cmd.Parameters.AddWithValue(MessageBodyParamName, !String.IsNullOrWhiteSpace(model.MessageBody) ? (object)model.MessageBody : DBNull.Value);
+                            cmd.Parameters.AddWithValue(ErrorLogParamName, model.HasErrorLog);
 
                             cmd.ExecuteNonQuery();
                         }

@@ -21,7 +21,7 @@ namespace XF.WebApi
                 return base.DefaultErrorCode;
             }
         }
-        
+
         public override void Initialize()
         {
             base.Initialize();
@@ -31,7 +31,7 @@ namespace XF.WebApi
             string messageProviderFolder = configFolder + "\\" + eXtensibleWebApiConfig.MessageProviderFolder;
             if (Directory.Exists(messageProviderFolder))
             {
-                List<string> files = new System.Collections.Generic.List<string>( Directory.GetFiles(messageProviderFolder));
+                List<string> files = new System.Collections.Generic.List<string>(Directory.GetFiles(messageProviderFolder));
                 var found = files.Find(x => x.StartsWith("messageprovider.", StringComparison.OrdinalIgnoreCase) && x.EndsWith(".xml", StringComparison.OrdinalIgnoreCase));
                 if (found != null)
                 {

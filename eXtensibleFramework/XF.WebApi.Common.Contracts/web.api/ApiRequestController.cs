@@ -14,6 +14,8 @@ namespace XF.WebApi
     {
         IApiRequestProvider RequestProvider { get; set; }
 
+
+
         #region local fields
         private const string description = "This controller serves up Api Request logging detail";
         private const string id = "882E9322-253B-46A6-A146-AA18001748C0";
@@ -23,31 +25,46 @@ namespace XF.WebApi
         #endregion
 
         #region do not alter
-        public override string GetDescription()
+        public override string Description
         {
-            return description;
+            get
+            {
+                return description;
+            }
         }
 
-        public override Guid GetId()
+
+        public override Guid Id
         {
-            return new Guid(id);
+            get
+            {
+                return new Guid(id);
+            }
         }
 
-        public override string GetName()
+        public override string Name
         {
-            return name;
+            get
+            {
+                return name;
+            }
         }
 
-        public override string GetRouteTablePattern()
+        public override string WhitelistPattern
         {
-            return routePattern;
+            get
+            {
+                return whitelistPattern;
+            }
         }
 
-        public override string GetWhitelistPattern()
+        public override string RouteTablePattern
         {
-            return whitelistPattern;
+            get
+            {
+                return routePattern;
+            }
         }
-
         #endregion
 
         public override void RegisterApiRoute(HttpConfiguration config)
@@ -67,20 +84,20 @@ namespace XF.WebApi
 
             //NameValueCollection nvc = Request.GetApiParameters(new FacetEndpointMediaSettings());
             HttpResponseMessage message = null;
-            int pageSize; 
+            int pageSize;
             Guid g; // either basic token or apirequest messageid
-            if (String.IsNullOrEmpty(id) ) // if absent, set pageSize
+            if (String.IsNullOrEmpty(id)) // if absent, set pageSize
             {
                 pageSize = 10;
                 var data = RequestProvider.Get(pageSize);
                 message = Request.CreateResponse(data);
             }
-            else if(Int32.TryParse(id, out pageSize))
+            else if (Int32.TryParse(id, out pageSize))
             {
                 var data = RequestProvider.Get(pageSize);
                 message = Request.CreateResponse(data);
             }
-            else if(Guid.TryParse(id, out g))
+            else if (Guid.TryParse(id, out g))
             {
                 var data = RequestProvider.Get(g);
                 message = Request.CreateResponse(data);

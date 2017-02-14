@@ -4,12 +4,13 @@
 
 namespace XF.WebApi
 {
+    using Common;
     using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Xml;
-using System.Xml.Serialization;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Xml;
+    using System.Xml.Serialization;
 
     [Serializable]
     public sealed class ApiRequest
@@ -108,13 +109,15 @@ using System.Xml.Serialization;
 
         public string MessageBody { get; set; }
 
+        public bool HasErrorLog { get; set; }
+
         [XmlIgnore]
         public string XmlData { get; set; }
-        
+
         [XmlIgnore]
         public string RData
-        { 
-            get 
+        {
+            get
             {
                 StringBuilder sb = new StringBuilder();
                 if (RouteData != null)
@@ -130,7 +133,7 @@ using System.Xml.Serialization;
                                 string[] t = left.Split(new char[] { '.' });
                                 string right = data.Substring(i + 2);
                                 string output = String.Format("{0} : {1}", t[t.Length - 1], right);
-                                sb.AppendLine(output);                               
+                                sb.AppendLine(output);
                             }
                             else
                             {
@@ -141,8 +144,10 @@ using System.Xml.Serialization;
                     }
                 }
                 return sb.ToString();
-            } 
+            }
         }
+
+        public List<TypedItem> LogItems { get; set; }
         #endregion properties
 
 
@@ -150,25 +155,29 @@ using System.Xml.Serialization;
         #region constructors
         public ApiRequest() { }
 
-        public ApiRequest(Dictionary<string,object> items)
+        public ApiRequest(Dictionary<string, object> items)
         {
-            
+
             bool hasStart = false;
             bool hasEnd = false;
+            if (items.ContainsKey("xf-custom-xf-id-log"))
+            {
+                HasErrorLog = true;
+            }
             if (items.ContainsKey("app.context.key"))
             {
                 AppKey = items.Get<string>("app.context.key");
-                
+
             }
             if (items.ContainsKey("app.context.zone"))
             {
                 AppZone = items.Get<string>("app.context.zone");
-                
+
             }
             if (items.ContainsKey("app.context.instance"))
             {
                 AppInstance = items.Get<string>("app.context.instance");
-                
+
             }
             if (items.ContainsKey("xf-request.start"))
             {
@@ -204,14 +213,14 @@ using System.Xml.Serialization;
             //    if (Decimal.TryParse(elapsed, out d))
             //    {
             //        Elapsed = d;
-                    
+
             //    }
             //}
 
             if (items.ContainsKey("xf-request.message.auth-schema"))
             {
                 AuthSchema = items.Get<string>("xf-request.message.auth-schema");
-                
+
             }
             else
             {
@@ -220,7 +229,7 @@ using System.Xml.Serialization;
             if (items.ContainsKey("xf-request.message.auth-value"))
             {
                 AuthValue = items.Get<string>("xf-request.message.auth-value");
-                
+
             }
             else
             {
@@ -234,69 +243,69 @@ using System.Xml.Serialization;
                 {
                     MessageId = id;
                 }
-                
+
             }
 
             if (items.ContainsKey("xf-request.message.local-path"))
             {
                 Path = items.Get<string>("xf-request.message.local-path");
-                
+
             }
             if (items.ContainsKey("xf-request.message.http-method"))
             {
                 HttpMethod = items.Get<string>("xf-request.message.http-method");
-                
+
             }
             if (items.ContainsKey("xf-request.message.protocol"))
             {
                 Protocol = items.Get<string>("xf-request.message.protocol");
-                
+
             }
             if (items.ContainsKey("xf-request.message.host"))
             {
                 Host = items.Get<string>("xf-request.message.host");
-                
+
             }
             if (items.ContainsKey("xf-request.message.client-ip"))
             {
                 ClientIP = items.Get<string>("xf-request.message.client-ip");
-                
+
             }
             if (items.ContainsKey("xf-request.message.user-agent"))
             {
                 UserAgent = items.Get<string>("xf-request.message.user-agent");
-                
+
             }
             if (items.ContainsKey("xf-request.route-data.controller"))
             {
                 ControllerName = items.Get<string>("xf-request.route-data.controller");
-                
+
             }
             if (items.ContainsKey("xf-request.controller-method.name"))
             {
                 ControllerMethod = items.Get<string>("xf-request.controller-method.name");
-                
+
             }
             if (items.ContainsKey("xf-request.controller-method.return-type"))
             {
                 MethodReturnType = items.Get<string>("xf-request.controller-method.return-type");
-                
+
             }
             if (items.ContainsKey("xf-request.response.status-code"))
             {
                 ResponseCode = items.Get<string>("xf-request.response.status-code");
-                
+
             }
 
             if (items.ContainsKey("xf-request.response.status-description"))
             {
                 ResponseText = items.Get<string>("xf-request.response.status-description");
-                
+
             }
             if (items.ContainsKey("xf-request.message.basic-token"))
             {
                 BasicToken = items.Get<string>("xf-request.message.basic-token");
-                
+
             }
             if (items.ContainsKey("xf-request.message.bearer-token"))
             {
@@ -311,18 +320,18 @@ using System.Xml.Serialization;
             List<string> rdlist = new List<string>();
             List<string> qslist = new List<string>();
             foreach (var data in others)
-            {                
+            {
                 if (data.Key.Contains("request.header"))
-                {                    
+                {
                     if (data.Key.ToString().Equals("referer", StringComparison.OrdinalIgnoreCase))
                     {
 
-                        string s = System.Uri.EscapeDataString(data.Value.ToString().Trim()); 
-                        string t = s.Replace('/','|');
+                        string s = System.Uri.EscapeDataString(data.Value.ToString().Trim());
+                        string t = s.Replace('/', '|');
                         hlist.Add(String.Format("{0}.s:: {1}", data.Key.Trim(), s));
                         hlist.Add(String.Format("{0}.t:: {1}", data.Key.Trim(), t));
                     }
-                    hlist.Add(String.Format("{0}:: {1}", data.Key.Trim(), data.Value.ToString().Trim()));                   
+                    hlist.Add(String.Format("{0}:: {1}", data.Key.Trim(), data.Value.ToString().Trim()));
                 }
                 else if (data.Key.Contains("route-data"))
                 {
@@ -351,7 +360,7 @@ using System.Xml.Serialization;
             if (items.ContainsKey("xf-request.message.body"))
             {
                 MessageBody = items.Get<string>("xf-request.message.body");
-                
+
             }
 
 

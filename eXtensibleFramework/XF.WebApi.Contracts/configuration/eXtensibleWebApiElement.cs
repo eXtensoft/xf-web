@@ -31,12 +31,12 @@ namespace XF.WebApi.Config
         [ConfigurationProperty("loggingMode", IsRequired = false)]
         public string LoggingMode
         {
-            get 
+            get
             {
                 object o = this["loggingMode"];
                 string s = o != null ? o.ToString() : LoggingModeOption.None.ToString();
                 LoggingModeOption option;
-                Enum.TryParse<LoggingModeOption>(s,true,out option);
+                Enum.TryParse<LoggingModeOption>(s, true, out option);
                 return option.ToString().ToLower();
             }
             set { this["loggingMode"] = value; }

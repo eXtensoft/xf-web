@@ -12,7 +12,7 @@ namespace XF.WebApi
     public static class WebApiCaller
     {
 
-    
+
         private const string CallerIdKey = "xf-id";
 
         private static readonly string KeyPattern = "xf-custom-{0}";
@@ -33,7 +33,7 @@ namespace XF.WebApi
                             sb.Append(item.ToString().ToLower());
                         }
                     }
-                    KeyPattern = String.Format("xf-{0}-{1}", sb.ToString().Trim(),"{0}");
+                    KeyPattern = String.Format("xf-{0}-{1}", sb.ToString().Trim(), "{0}");
                 }
                 else
                 {
@@ -43,10 +43,10 @@ namespace XF.WebApi
             catch
             {
                 KeyPattern = "xf-custom-{0}";
-                
+
             }
         }
-    
+
 
         public static T GetValue<T>(string key)
         {
@@ -77,9 +77,9 @@ namespace XF.WebApi
                                     string s = ex.Message;
                                 }
                             }
-                            
+
                         }
-                    }                    
+                    }
                 }
             }
 
@@ -89,10 +89,10 @@ namespace XF.WebApi
         public static Guid GetCallerId()
         {
             Guid id;
-            if (!TryGetValueInternal<Guid>(CallerIdKey,false,out id))
+            if (!TryGetValueInternal<Guid>(CallerIdKey, false, out id))
             {
                 id = Guid.NewGuid();
-                SetValueInternal(CallerIdKey,false, id);
+                SetValueInternal(CallerIdKey, false, id);
             }
             return id;
 

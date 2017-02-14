@@ -30,8 +30,17 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="MongoDB.Bson">
+      <HintPath>..\packages\mongocsharpdriver.1.10.0\lib\net35\MongoDB.Bson.dll</HintPath>
+    </Reference>
+    <Reference Include="MongoDB.Driver">
+      <HintPath>..\packages\mongocsharpdriver.1.10.0\lib\net35\MongoDB.Driver.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -41,7 +50,34 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\common\assemblyinfo\AssemblyInfo.cs" />
+    <Compile Include="common\alert\eXAlertSubscriber.cs" />
+    <Compile Include="model\eXAlert.cs" />
+    <Compile Include="model\eXError.cs" />
+    <Compile Include="model\eXEvent.cs" />
+    <Compile Include="model\eXKpi.cs" />
+    <Compile Include="model\eXMetric.cs" />
+    <Compile Include="model\eXStatus.cs" />
+    <Compile Include="model\eXTask.cs" />
+    <Compile Include="common\Metric.cs" />
+    <Compile Include="common\ProfileHour.cs" />
+    <Compile Include="common\ProfileItem.cs" />
+    <Compile Include="connection\MongoConnectionInfo.cs" />
+    <Compile Include="common\ExtensionMethods.cs" />
+    <Compile Include="mdg\MongoDbModelDataGateway`1.cs" />
+    <Compile Include="mdg\MongoDbModelDataGateway`2.cs" />
+    <Compile Include="mdg\MongoUpdate.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\XF.Common.Contracts\XF.Common.Contracts.csproj">
+      <Project>{d2c8a797-5ad1-4ba0-a50d-9cf5786d4ca6}</Project>
+      <Name>XF.Common.Contracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\XF.Common.Server.Contracts\XF.Common.Server.Contracts.csproj">
+      <Project>{009f5420-7005-49d6-84d7-bd258dc8a6ba}</Project>
+      <Name>XF.Common.Server.Contracts</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

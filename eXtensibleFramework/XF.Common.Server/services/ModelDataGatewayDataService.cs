@@ -17,6 +17,7 @@ namespace XF.DataServices
 
         private static ITypeMapCache _TypeCache;
 
+        private static XF.Common.Db.DbConfigCollection _DbConfigs = null;
 
         #endregion
 
@@ -79,9 +80,42 @@ namespace XF.DataServices
         private static void Initialize()
         {
             InitializeTypeCache();
+            InitializeDbConfig();
         }
 
+        private static void InitializeDbConfig()
+        {
+            _DbConfigs = new Common.Db.DbConfigCollection();
+            try
+            {
+                if (System.IO.Directory.Exists(eXtensibleConfig.DbConfigs))
+                {
+                    var candidates = System.IO.Directory.GetFiles(eXtensibleConfig.DbConfigs, "*.dbconfig.xml");
+                    if (candidates != null && candidates.Length > 0)
+                    {
+                        foreach (var candidate in candidates)
+                        {
+                            try
+                            {
+                                var config = GenericSerializer.ReadGenericItem<XF.Common.Db.DbConfig>(candidate);
+                                _DbConfigs.Add(config);
+                            }
+                            catch (Exception ex)
+                            {
+                                string message = ex.InnerException != null ? ex.InnerException.Message : ex.Message;
+                                var props = eXtensibleConfig.GetProperties();
+                                EventWriter.WriteError(message, SeverityType.Critical, "DataAccess", props);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                string s = ex.Message;
+            }
 
+        }
         private static void InitializeTypeCache()
         {
             string configfilepath = AppDomain.CurrentDomain.SetupInformation.ConfigurationFile;
@@ -108,7 +142,7 @@ namespace XF.DataServices
             {
                 folderpaths.Add(bin);
             }
-            
+
             _TypeCache = new TypeMapCache(folderpaths);
 
             _TypeCache.Initialize();
@@ -130,12 +164,12 @@ namespace XF.DataServices
                 item = Create<T>(model, requestContext);
             }
             catch (Exception ex)
-            {                               
+            {
                 var message = Exceptions.ComposeGeneralExceptionError<T>(ModelActionOption.Post, ex, model, null, requestContext);
                 var props = eXtensibleConfig.GetProperties();
                 props.Add(XFConstants.Context.Ticket, message.Id);
-                requestContext.SetError(500, message.ToPublish() );
-                EventWriter.WriteError(message.ToLog(), SeverityType.Error,XFConstants.Category.DataAccess,props);
+                requestContext.SetError(500, message.ToPublish());
+                EventWriter.WriteError(message.ToLog(), SeverityType.Error, XFConstants.Category.DataAccess, props);
             }
             if (item == null && requestContext.HasError())
             {
@@ -165,9 +199,9 @@ namespace XF.DataServices
                 var message = Exceptions.ComposeGeneralExceptionError<T>(ModelActionOption.Put, ex, model, null, requestContext);
                 var props = eXtensibleConfig.GetProperties();
                 props.Add(XFConstants.Context.Ticket, message.Id);
-                requestContext.SetError(500, message.ToPublish() );
+                requestContext.SetError(500, message.ToPublish());
                 requestContext.SetStacktrace(ex.StackTrace);
-                EventWriter.WriteError(message.ToLog(), SeverityType.Error,XFConstants.Category.DataAccess,props);
+                EventWriter.WriteError(message.ToLog(), SeverityType.Error, XFConstants.Category.DataAccess, props);
             }
             if (eXtensibleConfig.CaptureMetrics)
             {
@@ -194,9 +228,9 @@ namespace XF.DataServices
                 var message = Exceptions.ComposeGeneralExceptionError<T>(ModelActionOption.Delete, ex, null, criterion, requestContext);
                 var props = eXtensibleConfig.GetProperties();
                 props.Add(XFConstants.Context.Ticket, message.Id);
-                requestContext.SetError(500, message.ToPublish() );
+                requestContext.SetError(500, message.ToPublish());
                 requestContext.SetStacktrace(ex.StackTrace);
-                EventWriter.WriteError(message.ToLog(), SeverityType.Error,XFConstants.Category.DataAccess,props);
+                EventWriter.WriteError(message.ToLog(), SeverityType.Error, XFConstants.Category.DataAccess, props);
             }
             if (item == null && !requestContext.HasError())
             {
@@ -225,11 +259,11 @@ namespace XF.DataServices
             catch (Exception ex)
             {
                 var message = Exceptions.ComposeGeneralExceptionError<T>(ModelActionOption.Get, ex, null, criterion, requestContext);
-                requestContext.SetError(500, message.ToPublish() );
+                requestContext.SetError(500, message.ToPublish());
                 requestContext.SetStacktrace(ex.StackTrace);
                 var props = eXtensibleConfig.GetProperties();
                 props.Add(XFConstants.Context.Ticket, message.Id);
-                EventWriter.WriteError(message.ToLog(), SeverityType.Error,XFConstants.Category.DataAccess,props);
+                EventWriter.WriteError(message.ToLog(), SeverityType.Error, XFConstants.Category.DataAccess, props);
             }
             if (item == null && !requestContext.HasError())
             {
@@ -257,12 +291,12 @@ namespace XF.DataServices
             }
             catch (Exception ex)
             {
-                var message = Exceptions.ComposeGeneralExceptionError<T>(ModelActionOption.GetAll , ex, null, criterion, requestContext);
-                requestContext.SetError(500,message.ToPublish());
+                var message = Exceptions.ComposeGeneralExceptionError<T>(ModelActionOption.GetAll, ex, null, criterion, requestContext);
+                requestContext.SetError(500, message.ToPublish());
                 requestContext.SetStacktrace(ex.StackTrace);
                 var props = eXtensibleConfig.GetProperties();
                 props.Add(XFConstants.Context.Ticket, message.Id);
-                EventWriter.WriteError(message.ToLog(), SeverityType.Error,XFConstants.Category.DataAccess,props);
+                EventWriter.WriteError(message.ToLog(), SeverityType.Error, XFConstants.Category.DataAccess, props);
             }
             //if (list != null && list.Count() == 0 && !requestContext.HasError())
             //{
@@ -295,11 +329,11 @@ namespace XF.DataServices
             catch (Exception ex)
             {
                 var message = Exceptions.ComposeGeneralExceptionError<T>(ModelActionOption.GetAllProjections, ex, null, criterion, requestContext);
-                requestContext.SetError(500, message.ToPublish() );
+                requestContext.SetError(500, message.ToPublish());
                 requestContext.SetStacktrace(ex.StackTrace);
                 var props = eXtensibleConfig.GetProperties();
                 props.Add(XFConstants.Context.Ticket, message.Id);
-                EventWriter.WriteError(message.ToLog(), SeverityType.Error,XFConstants.Category.DataAccess,props);
+                EventWriter.WriteError(message.ToLog(), SeverityType.Error, XFConstants.Category.DataAccess, props);
                 //Logger.Log
             }
             if (list != null && list.Count() == 0 && !requestContext.HasError())
@@ -307,7 +341,7 @@ namespace XF.DataServices
                 var message = Exceptions.ComposeResourceNotFoundError<T>(ModelActionOption.GetAllProjections, null, criterion, requestContext);
                 requestContext.SetError(404, message.ToPublish());
             }
-            else if(list == null && !requestContext.HasError())
+            else if (list == null && !requestContext.HasError())
             {
                 list = new List<Projection>();
                 requestContext.SetError(500, "Internal Server Error");
@@ -334,11 +368,11 @@ namespace XF.DataServices
             catch (Exception ex)
             {
                 var message = Exceptions.ComposeGeneralExceptionError<T>(ModelActionOption.ExecuteAction, ex, model, criterion, requestContext);
-                requestContext.SetError(500, message.ToPublish() );
+                requestContext.SetError(500, message.ToPublish());
                 requestContext.SetStacktrace(ex.StackTrace);
                 var props = eXtensibleConfig.GetProperties();
                 props.Add(XFConstants.Context.Ticket, message.Id);
-                EventWriter.WriteError(message.ToLog(), SeverityType.Error,XFConstants.Category.DataAccess,props);              
+                EventWriter.WriteError(message.ToLog(), SeverityType.Error, XFConstants.Category.DataAccess, props);
             }
             if (u == null)
             {
@@ -371,7 +405,7 @@ namespace XF.DataServices
                 requestContext.SetStacktrace(ex.StackTrace);
                 var props = eXtensibleConfig.GetProperties();
                 props.Add(XFConstants.Context.Ticket, message.Id);
-                EventWriter.WriteError(message.ToLog(), SeverityType.Error,XFConstants.Category.DataAccess,props);
+                EventWriter.WriteError(message.ToLog(), SeverityType.Error, XFConstants.Category.DataAccess, props);
                 //Logger.Log
             }
             if (ds != null && ds.Tables.Count == 0 && !requestContext.HasError())
@@ -464,7 +498,7 @@ namespace XF.DataServices
         //    }
         //    return u;
         //}
-        
+
         #endregion
 
 
@@ -473,7 +507,7 @@ namespace XF.DataServices
         private T Create<T>(T model, IRequestContext requestContext) where T : class, new()
         {
             T result = default(T);
-            var implementor = ResolveImplementor<T>(ModelActionOption.Post, requestContext, model,null);
+            var implementor = ResolveImplementor<T>(ModelActionOption.Post, requestContext, model, null);
             if (implementor != null)
             {
                 IContext context = requestContext as IContext;
@@ -485,13 +519,13 @@ namespace XF.DataServices
         private T Update<T>(T model, ICriterion criterion, IRequestContext requestContext) where T : class, new()
         {
             T result = default(T);
-            var implementor = ResolveImplementor<T>(ModelActionOption.Put, requestContext, model,null);
+            var implementor = ResolveImplementor<T>(ModelActionOption.Put, requestContext, model, null);
             if (implementor != null)
             {
                 IContext context = requestContext as IContext;
                 result = implementor.Put(model, criterion, context);
             }
-            return result;            
+            return result;
         }
 
         private ICriterion Delete<T>(ICriterion criterion, IRequestContext requestContext) where T : class, new()
@@ -545,7 +579,7 @@ namespace XF.DataServices
         private U ExecuteAction<T, U>(T model, ICriterion criterion, IRequestContext requestContext) where T : class, new()
         {
             U result = default(U);
-            var implementor = ResolveImplementor<T>(ModelActionOption.ExecuteAction, requestContext,null, criterion);
+            var implementor = ResolveImplementor<T>(ModelActionOption.ExecuteAction, requestContext, null, criterion);
             if (implementor != null)
             {
                 IContext context = requestContext as IContext;
@@ -561,7 +595,7 @@ namespace XF.DataServices
             if (implementor != null)
             {
                 IContext context = requestContext as IContext;
-                result = implementor.ExecuteCommand(ds,criterion, context);
+                result = implementor.ExecuteCommand(ds, criterion, context);
             }
             return result;
         }
@@ -611,13 +645,50 @@ namespace XF.DataServices
             return key;
         }
 
-        private IModelDataGateway<T> ResolveImplementor<T>(ModelActionOption option, IContext context,T t, ICriterion criterion) where T : class, new()
+        private IModelDataGateway<T> ResolveImplementor<T>(ModelActionOption option, IContext context, T t, ICriterion criterion) where T : class, new()
         {
             IModelDataGateway<T> implementor = null;
-            
+
             Type type = _TypeCache.ResolveType<T>();
-            if (type != null)
-            { 
+            if (type == null)
+            {
+                // if not, create one and add the model.  then add sproc based if exists, otherwise add inline on appcontext-model by appcontext-model basis;
+                if (_DbConfigs.Contains(context.ApplicationContextKey))
+                {
+                    var modelType = typeof(T);
+                    string modelKey = modelType.FullName;
+                    var found = _DbConfigs[context.ApplicationContextKey].Models.Find(x => x.Key.Equals(modelKey));
+                    if (found == null)
+                    {
+                        XF.Common.Db.Model model = new Common.Db.Model() { Key = modelKey, modelType = modelType.AssemblyQualifiedName, ModelActions = new List<Common.Db.ModelAction>(), Commands = new List<Common.Db.DbCommand>(), DataMaps = new List<Common.Db.DataMap>() };
+                        _DbConfigs[context.ApplicationContextKey].Models.Add(model);
+                        found = _DbConfigs[context.ApplicationContextKey].Models.Find(x => x.Key.Equals(modelKey));
+                    }
+                    if (found != null)
+                    {
+                        implementor = new ConfigModelDataGateway<T>(found);
+                    }
+                    else
+                    {
+
+                    }
+                }
+                else if (eXtensibleConfig.Infer)
+                {
+                    implementor = new GenericModelDataGateway<T>();
+
+                }
+
+                //if (implementor == null)
+                //{
+                //    var message = Exceptions.ComposeImplementorResolutionError<T>(option, t, context);
+                //    context.SetError(500, message.ToPublish());
+                //    EventWriter.WriteError(message.ToLog(), SeverityType.Error);
+                //}
+
+            }
+            else
+            {
                 implementor = Activator.CreateInstance(type) as IModelDataGateway<T>;
             }
             if (implementor == null)
@@ -628,7 +699,7 @@ namespace XF.DataServices
                     context.SetError(500, message.ToPublish());
                     var props = eXtensibleConfig.GetProperties();
                     props.Add(XFConstants.Context.Ticket, message.Id);
-                    EventWriter.WriteError(message.ToLog(), SeverityType.Error,XFConstants.Category.DataAccess,props);                    
+                    EventWriter.WriteError(message.ToLog(), SeverityType.Error, XFConstants.Category.DataAccess, props);
                 }
                 else
                 {
@@ -636,27 +707,32 @@ namespace XF.DataServices
                     context.SetError(500, message.ToPublish());
                     var props = eXtensibleConfig.GetProperties();
                     props.Add(XFConstants.Context.Ticket, message.Id);
-                    EventWriter.WriteError(message.ToLog(), SeverityType.Error, XFConstants.Category.DataAccess, props);                   
+                    EventWriter.WriteError(message.ToLog(), SeverityType.Error, XFConstants.Category.DataAccess, props);
                 }
 
 
             }
-            else 
+            else
             {
                 if (eXtensibleConfig.Inform)
                 {
 
                     EventWriter.Inform(String.Format("MDG selected: {0}", implementor.GetType().FullName));
                 }
-                    
+
                 implementor.DataService = this as IDatastoreService;
                 implementor.Context = context;
 
+                ICacheable<T> cacheable = implementor as ICacheable<T>;
+                if (cacheable != null)
+                {
+                    cacheable.Cache = Cache;
+                }
                 // TODO, outsource this
                 IModelDataGatewayInitializeable initializable = implementor as IModelDataGatewayInitializeable;
                 if (initializable != null)
                 {
-                    initializable.Initialize<T>(option,context,t,criterion,ResolveDbKey<T>);
+                    initializable.Initialize<T>(option, context, t, criterion, ResolveDbKey<T>);
                 }
 
             }

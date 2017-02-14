@@ -219,7 +219,7 @@ namespace XF.WebApi.Core
 
                 string basicToken;
                 string bearerToken;
-                if (!d.ContainsKey("xf-request.message.basic-token") && exPrincipal.Identity.TryGetValue<string>(System.Security.Claims.ClaimTypes.Sid, out basicToken))
+                if (!d.ContainsKey("xf-request.message.basic-token") && exPrincipal.Identity.TryGetValue<string>("source", out basicToken))
                 {
                     d.Add("xf-request.message.basic-token", basicToken);
                 }

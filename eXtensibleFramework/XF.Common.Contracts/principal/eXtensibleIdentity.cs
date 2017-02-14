@@ -44,7 +44,7 @@ namespace XF.Common
             if (found != null)
             {
                 _Items.Remove(found);
-                
+
             }
             _Items.Add(new TypedItem(key, o));
         }

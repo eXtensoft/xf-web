@@ -52,6 +52,29 @@ namespace XF.Common
         public eXtensibleIdentity Identity { get; private set; }
 
 
+        //#region CallerItems (List<TypedItem>)
+
+        //private List<TypedItem> _CallerItems = new List<TypedItem>();
+
+        ///// <summary>
+        ///// Gets or sets the List<TypedItem> value for CallerItems
+        ///// </summary>
+        ///// <value> The List<TypedItem> value.</value>
+
+        //public List<TypedItem> CallerItems
+        //{
+        //    get { return _CallerItems; }
+        //    set
+        //    {
+        //        if (_CallerItems != value)
+        //        {
+        //            _CallerItems = value;
+        //        }
+        //    }
+        //}
+
+        //#endregion
+
         public eXtensibleClaimsPrincipal(ClaimsIdentity identity)
         : base(identity)
         {
@@ -78,13 +101,13 @@ namespace XF.Common
         public void RemoveClaim(string key)
         {
             var existingClaims = FindAll(key);
-            
+
         }
 
         public void AddItem(string key, object item)
         {
             Items.Add(new TypedItem(key, item));
-            
+
         }
 
         public static void Add(string key, object item)
@@ -96,14 +119,14 @@ namespace XF.Common
             }
         }
 
-        //public static void Accept(IeXtensibleVisitor visitor)
-        //{
-        //    var cp = Thread.CurrentPrincipal as eXtensibleClaimsPrincipal;
-        //    if (cp != null)
-        //    {
-        //        cp.Items.Accept(visitor);
-        //    }
-        //}
+        public static void Accept(IeXtensibleVisitor visitor)
+        {
+            var cp = Thread.CurrentPrincipal as eXtensibleClaimsPrincipal;
+            if (cp != null)
+            {
+                cp.Items.Accept(visitor);
+            }
+        }
 
 
         public bool TryGetClaim<T>(string key, out T t) where T : IConvertible
@@ -112,13 +135,13 @@ namespace XF.Common
             t = default(T);
             string typeName = t.GetType().Name;
             string claimAsText;
-            if (TryGetClaim(key, out claimAsText) && Parser.Parse<T>(claimAsText,out t))
+            if (TryGetClaim(key, out claimAsText) && Parser.Parse<T>(claimAsText, out t))
             {
                 b = true;
             }
             return b;
         }
-        
+
 
         private bool TryGetClaim(string key, out string claim)
         {

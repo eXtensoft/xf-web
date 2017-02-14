@@ -39,17 +39,17 @@ namespace XF.WebApi
         private static HttpResponseMessage GenerateResponseInternal<T>(this HttpRequestMessage request, System.Net.HttpStatusCode statusCode, T t)
         {
             HttpResponseMessage response = null;
-            ResponseConfiguration.MessageProvider.VetStatusCode(statusCode,t);
+            ResponseConfiguration.MessageProvider.VetStatusCode(statusCode, t);
             response = request.CreateResponse<T>(statusCode, t);
             return response;
         }
         public static HttpResponseMessage GenerateErrorResponse<T>(this HttpRequestMessage request, System.Net.HttpStatusCode statusCode, T t)
         {
-            
+
             HttpResponseMessage response = null;
             ResponseConfiguration.MessageProvider.VetStatusCode(statusCode, t);
             string message;
-            ResponseConfiguration.MessageProvider.GetError(statusCode,t, out message);
+            ResponseConfiguration.MessageProvider.GetError(statusCode, t, out message);
             response = request.CreateErrorResponse(statusCode, message);
             return response;
         }
@@ -80,8 +80,8 @@ namespace XF.WebApi
         private static HttpResponseMessage GenerateResponseInternal(this HttpRequestMessage request, System.Net.HttpStatusCode statusCode, object o)
         {
             HttpResponseMessage response = null;
-            ResponseConfiguration.MessageProvider.VetStatusCode(statusCode,o);
-            response = request.GenerateResponse(statusCode, o);
+            ResponseConfiguration.MessageProvider.VetStatusCode(statusCode, o);
+            response = request.CreateResponse(statusCode, o);
 
             return response;
         }
@@ -89,7 +89,7 @@ namespace XF.WebApi
         public static HttpResponseMessage GenerateErrorResponse(this HttpRequestMessage request, System.Net.HttpStatusCode statusCode, object o)
         {
             HttpResponseMessage response = null;
-            ResponseConfiguration.MessageProvider.VetStatusCode(statusCode,o);
+            ResponseConfiguration.MessageProvider.VetStatusCode(statusCode, o);
             response = request.CreateErrorResponse(statusCode, o.ToString());
             return response;
         }
@@ -117,7 +117,7 @@ namespace XF.WebApi
         {
             HttpResponseMessage response = null;
             ResponseConfiguration.MessageProvider.VetStatusCode(statusCode);
-            response = request.GenerateResponse(statusCode);
+            response = request.CreateResponse(statusCode);
 
             return response;
         }
@@ -137,7 +137,7 @@ namespace XF.WebApi
         public static HttpResponseMessage GenerateResponse(this HttpRequestMessage request, string identifier)
         {
             HttpResponseMessage response = null;
-            
+
             string message;
             System.Net.HttpStatusCode code;
             ResponseConfiguration.MessageProvider.Get(identifier, out code, out message);
@@ -307,7 +307,7 @@ namespace XF.WebApi
 
         //    bool b = ResponseConfiguration.MessageProvider.VetStatusCode(statusCode);
         //    response = request.CreateResponse(statusCode,model);
-            
+
         //    return response;
         //}
 

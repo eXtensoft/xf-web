@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfEndpoint xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+ <Endpoint sortOrder="1" version="0" id="66aa8780-3ea8-47e2-a9d5-6f00213a200d" name="Debug Controller">
+  <Whitelist>{*tokens}</Whitelist>
+  <Pattern>v{version}/debug/{token}/{message}</Pattern>
+  <Description>This endpoint captures invalid api url calls</Description>
+ </Endpoint>
+ <Endpoint sortOrder="2" version="0" id="00f1224a-24ad-43b5-9a8c-6439a506ee76" name="ToDo Controller">
+  <Whitelist>v{version}/todos/{id}</Whitelist>
+  <Pattern>v{version}/todos/{id}</Pattern>
+  <Description>This controller provides actions to create, get, remove, and update 'ToDo' items</Description>
+ </Endpoint>
+ <Endpoint sortOrder="3" version="0" id="882e9322-253b-46a6-a146-aa18001748c0" name="Api Request Controller">
+  <Whitelist>webapi/{id}</Whitelist>
+  <Pattern>webapi/{token}</Pattern>
+  <Description>This controller serves up Api Request logging detail</Description>
+ </Endpoint>
+</ArrayOfEndpoint>

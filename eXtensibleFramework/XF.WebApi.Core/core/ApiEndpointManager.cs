@@ -33,7 +33,7 @@ namespace XF.WebApi.Core
         {
             get
             {
-                
+
                 return _Endpoints;
             }
         }
@@ -61,7 +61,7 @@ namespace XF.WebApi.Core
             string gg = eXtensibleWebApiConfig.CatchAll;
             Guid gid = new Guid(gg);
 
-           _IsInitialized = Controllers != null && Controllers.Count() > 0;
+            _IsInitialized = Controllers != null && Controllers.Count() > 0;
             int i = 1;
             if (_IsInitialized)
             {
@@ -77,12 +77,12 @@ namespace XF.WebApi.Core
                         var item = new Endpoint()
                         {
                             SortOrder = i++,
-                            Id = endpoint.Id.ToString(),
-                            Name = endpoint.Name,
-                            Description = endpoint.Description,
-                            RoutePattern = endpoint.RouteTablePattern,
-                            WhitelistPattern = endpoint.WhitelistPattern,
-                            Version = endpoint.Version
+                            Id = endpoint.EndpointId.ToString(),
+                            Name = endpoint.EndpointName,
+                            Description = endpoint.EndpointDescription,
+                            RoutePattern = endpoint.EndpointRouteTablePattern,
+                            WhitelistPattern = endpoint.EndpointWhitelistPattern,
+                            Version = endpoint.EndpointVersion
                         };
                         list.Add(item);
                     }
@@ -95,19 +95,19 @@ namespace XF.WebApi.Core
 
                     // IF endpoints came from existing, then order
                     List<Guid> burned = new List<Guid>();
-                    
+
                     foreach (Endpoint orderedEndpoint in endpoints)
                     {
                         Guid g = new Guid(orderedEndpoint.Id);
 
-                        var found = Controllers.Find(x => x.Id.Equals(g));
-                        if (found != null && found.Id != gid)
+                        var found = Controllers.Find(x => x.EndpointId.Equals(g));
+                        if (found != null && found.EndpointId != gid)
                         {
                             if (found != null)
                             {
                                 burned.Add(g);
                                 _OrderedControllers.Add(found);
-                            }                            
+                            }
                         }
 
                     }
@@ -115,8 +115,8 @@ namespace XF.WebApi.Core
                     // to the tail of the explicitly ordered controllers
                     foreach (var controller in Controllers)
                     {
-                        
-                        if (!burned.Contains(controller.Id) && controller.Id != gid)
+
+                        if (!burned.Contains(controller.EndpointId) && controller.EndpointId != gid)
                         {
                             _OrderedControllers.Add(controller);
                         }
@@ -132,12 +132,12 @@ namespace XF.WebApi.Core
                     {
                         Endpoint model = new Endpoint();
                         model.SortOrder = i++;
-                        model.Id = item.Id.ToString();
-                        model.Name = item.Name;
-                        model.Description = item.Name;
-                        model.RoutePattern = item.RouteTablePattern;
-                        model.WhitelistPattern = item.WhitelistPattern;
-                        model.Version = item.Version;
+                        model.Id = item.EndpointId.ToString();
+                        model.Name = item.EndpointName;
+                        model.Description = item.EndpointDescription;
+                        model.RoutePattern = item.EndpointRouteTablePattern;
+                        model.WhitelistPattern = item.EndpointWhitelistPattern;
+                        model.Version = item.EndpointVersion;
                         list.Add(model);
                     }
 
@@ -163,11 +163,12 @@ namespace XF.WebApi.Core
         }
 
         private void WriteToDatastore(List<Endpoint> list)
-        {            
+        {
             GenericSerializer.WriteGenericList<Endpoint>(list, info.FullName);
         }
 
-        public void SaveChanges() {
+        public void SaveChanges()
+        {
             if (IsDirty && eXtensibleWebApiConfig.IsEditRegistration)
             {
                 string filepath = HostingEnvironment.MapPath("~/app_data/api.endpoints.xml");
@@ -220,12 +221,12 @@ namespace XF.WebApi.Core
                     Endpoint item = endpoint;
                     list.Add(item);
                 }
-                else if(endpoint.Id.Equals(xid))
+                else if (endpoint.Id.Equals(xid))
                 {
                     Endpoint item = endpoint;
                     xEndpoint = item;
                 }
-                else if(endpoint.Id.Equals(yid))
+                else if (endpoint.Id.Equals(yid))
                 {
                     yEndpoint = endpoint;
                     list.Add(yEndpoint);

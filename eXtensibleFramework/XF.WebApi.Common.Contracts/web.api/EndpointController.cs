@@ -15,72 +15,72 @@ namespace XF.WebApi
     public abstract class EndpointController : ApiController, IEndpointController
     {
 
-        public abstract string GetDescription();
+        public abstract string Description { get; }
 
-        public abstract Guid GetId();
+        public abstract Guid Id { get; }
 
-        public abstract string GetName();
+        public abstract string Name { get; }
 
-        public virtual int GetVersion() {  return 1; }
+        public virtual int Version { get; }
 
-        public abstract string GetWhitelistPattern();
+        public abstract string WhitelistPattern { get; }
 
-        public abstract string GetRouteTablePattern();
+        public abstract string RouteTablePattern { get; }
 
         public virtual void RegisterApiRoute(HttpConfiguration config)
         {
             config.Routes.MapHttpRoute(
-                    name: ((IEndpointController)this).Name,
-                    routeTemplate: ((IEndpointController)this).RouteTablePattern,
+                    name: ((IEndpointController)this).EndpointName,
+                    routeTemplate: ((IEndpointController)this).EndpointRouteTablePattern,
                     defaults: new { controller = ControllerName }
                 );
         }
 
-        string IEndpointController.Description
+        string IEndpointController.EndpointDescription
         {
             get
             {
-                return GetDescription() ;
+                return Description;
             }
         }
 
-        Guid IEndpointController.Id
+        Guid IEndpointController.EndpointId
         {
             get
             {
-                return GetId();
+                return Id;
             }
         }
 
-        string IEndpointController.Name
+        string IEndpointController.EndpointName
         {
             get
             {
-                return GetName();
+                return Name;
             }
         }
 
-        int IEndpointController.Version
+        int IEndpointController.EndpointVersion
         {
             get
             {
-                return GetVersion();
+                return Version;
             }
         }
 
-        string IEndpointController.WhitelistPattern
+        string IEndpointController.EndpointWhitelistPattern
         {
             get
             {
-                return GetWhitelistPattern();
+                return WhitelistPattern;
             }
         }
 
-        string IEndpointController.RouteTablePattern
+        string IEndpointController.EndpointRouteTablePattern
         {
             get
             {
-                return GetRouteTablePattern();
+                return RouteTablePattern;
             }
         }
 
@@ -89,7 +89,7 @@ namespace XF.WebApi
             if (config != null)
             {
                 RegisterApiRoute(config);
-            }            
+            }
         }
 
         protected string ControllerName
@@ -101,7 +101,7 @@ namespace XF.WebApi
                 if (!String.IsNullOrWhiteSpace(typename) && typename.Contains("Controller"))
                 {
                     int len = typename.IndexOf("Controller");
-                    output = typename.Substring(0,len);
+                    output = typename.Substring(0, len);
                 }
                 return output;
             }
